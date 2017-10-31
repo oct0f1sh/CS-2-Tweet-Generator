@@ -1,6 +1,7 @@
 import random
 import sys
 
+
 def dictionary_words(numOfWords):
     words = []
     f = open('/usr/share/dict/words', 'r', encoding='utf-8')
@@ -13,6 +14,8 @@ def dictionary_words(numOfWords):
         random_word = words[randy]
         # takes the newline off the end of each word
         print(random_word[0:-1])
+
+    f.close()
 
 
 dictionary_words(int(sys.argv[1]))
