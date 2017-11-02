@@ -8,27 +8,31 @@ For example, when given the histogram for The Adventures of Sherlock Holmes, it 
 A frequency() function that takes a word and histogram argument and returns the number of times that word appears in a text.
 For example, when given the word "mystery" and the Holmes histogram, it will return the integer 20.
 '''
-
+import time
+import re
 
 class CorpusHistogram:
     def __init__(self, corpus):
-        self.histogram = []
+        self.histogram = {}
         self.get_histogram(corpus)
 
     def get_histogram(self, source_text):
+        start_time = time.time()
         f = open(source_text, 'r', encoding='utf-8')
         print('Generating histogram for {}...'.format(source_text))
-        for line in f:
-            words = line.replace('-', ' ').replace('#', '').replace('_', '').split(' ')
-            for word in words:
-                plain_word = self.remove_punctuation(word)
-                self.check_word_in_histogram(plain_word)
-        self.histogram = sorted(self.histogram, key=lambda k: k.get('count'), reverse=False)
-        for word in self.histogram:
-            if word.get('count') == 1:
-                print('\"{}\" appears 1 time'.format(word.get('word')))
-            else:
-                print('\"{}\" appears {} times'.format(word.get('word'), word.get('count')))
+        words = f.read().lower().replace('\n', ' ')
+        words = re.sub('[^a-z]+', ' ', words)
+        words = words.split(' ')
+
+        self.check_word_in_histogram(words)
+
+        elapsed_time = time.time() - start_time
+
+        for sorted_item in sorted(self.histogram.items(), key=lambda item: item[1]):
+            print('\"{}\" appears {} times'.format(sorted_item[0], sorted_item[1]))
+
+        print('Elapsed time: {} seconds'.format(int(elapsed_time)))
+        f.close()
 
     def unique_words(self):
         pass
@@ -36,26 +40,18 @@ class CorpusHistogram:
     def frequency(self):
         pass
 
-    def remove_punctuation(self, word):
-        """
-        remove_punctuation iterates through every char in 'word' and checks if it the ASCII value is in range of
-        lowercase letters. Returns lowercase word with only letters.
-        """
-        word = list(word.lower().rstrip('\n'))
-        for char in word:
-            if ord(char) <= 122 and ord(char) >= 97:
-                continue
-            else:
-                word.remove(char)
-        return ''.join(word)
-
-    def check_word_in_histogram(self, word):
-        for histogram_word in self.histogram:
-            if word == histogram_word.get('word'):
-                histogram_word['count'] += 1
-                return
-        self.histogram.append({'word': word, 'count': 1})
-        return
+    def check_word_in_histogram(self, words):
+        # for histogram_word in self.histogram:
+        #     if word == histogram_word.get('word'):
+        #         histogram_word['count'] += 1
+        #         return
+        # self.histogram.append({'word': word, 'count': 1})
+        # return
+        info_histogram = {}
+        tony_is_weird = info_histogram.get
+        for word in words:
+            info_histogram[word] = tony_is_weird(word, 0) + 1
+        self.histogram = info_histogram
 
 
 nice = CorpusHistogram('surgery.txt')
