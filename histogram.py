@@ -13,14 +13,17 @@ import re
 
 
 class CorpusHistogram:
-    def __init__(self, corpus):
+    def __init__(self, corpus, write_to_file):
         self.histogram = {}
+        self.initialize_file()
+        self.write_to_file = write_to_file
         self.get_histogram(corpus)
 
     def get_histogram(self, source_text):
+        '''Reads the source text and generates/returns the completed histogram'''
         start_time = time.time()
         f = open(source_text, 'r', encoding='utf-8')
-        print('Generating histogram for {}...'.format(source_text))
+        self.log_item('Histogram for {}:'.format(source_text))
         words = f.read().lower().replace('\n', ' ')
         words = re.sub('[^a-z]+', ' ', words)
         words = words.split(' ')
@@ -30,34 +33,59 @@ class CorpusHistogram:
         elapsed_time = time.time() - start_time
 
         for sorted_item in sorted(self.histogram.items(), key=lambda item: item[1]):
-            print('\"{}\" appears {} times'.format(sorted_item[0], sorted_item[1]))
+            item_text = '\"{}\" appears {} times'.format(sorted_item[0], sorted_item[1])
+            self.log_item(item_text)
 
-        print('\nElapsed time: {} seconds'.format(elapsed_time))
+        item_text = '\nElapsed time: {} seconds'.format(elapsed_time)
+        self.log_item(item_text)
+
         f.close()
 
     def unique_words(self, histogram):
+        '''Checks the length of the histogram and returns that number as the number of unique words'''
         length = len(histogram)
-        print('\nThere are {} unique words.\n'.format(length))
+        item_text = '\nThere are {} unique words.\n'.format(length)
+        self.log_item(item_text)
         return length
 
     def frequency(self, word):
+        '''Searches the histogram for the given word and returns/logs the count'''
         word_info = self.histogram.get(word)
 
         if word_info is None:
             return
 
-        print('\"{}\" appears {} times.\n'.format(word, word_info))
+        item_text = '\"{}\" appears {} times.\n'.format(word, word_info)
+        self.log_item(item_text)
 
         return word_info
 
     def check_word_in_histogram(self, words):
+        '''Checks if word is in histogram
+        if word is in histogram then it will increase the count by one
+        if word is not in histogram then it will add it and initialize count to 0
+        i don't really understand why this works but tony showed it to me'''
         info_histogram = {}
         tony_is_weird = info_histogram.get
         for word in words:
             info_histogram[word] = tony_is_weird(word, 0) + 1
         self.histogram = info_histogram
 
+    def log_item(self, item):
+        '''Writes item to log.txt'''
+        print(item)
+        if self.write_to_file:
+            f = open('log.txt', 'a')
+            f.write('\n{}'.format(item))
+            f.close()
 
-nice = CorpusHistogram('surgery.txt')
+    def initialize_file(self):
+        '''Clear previous log file'''
+        f = open('log.txt', 'w')
+        f.write('')
+        f.close()
+
+
+nice = CorpusHistogram('surgery.txt', True)
 nice.unique_words(nice.histogram)
 nice.frequency('fig')
