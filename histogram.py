@@ -11,6 +11,7 @@ For example, when given the word "mystery" and the Holmes histogram, it will ret
 import time
 import re
 
+
 class CorpusHistogram:
     def __init__(self, corpus):
         self.histogram = {}
@@ -31,22 +32,25 @@ class CorpusHistogram:
         for sorted_item in sorted(self.histogram.items(), key=lambda item: item[1]):
             print('\"{}\" appears {} times'.format(sorted_item[0], sorted_item[1]))
 
-        print('Elapsed time: {} seconds'.format(int(elapsed_time)))
+        print('\nElapsed time: {} seconds'.format(elapsed_time))
         f.close()
 
-    def unique_words(self):
-        pass
+    def unique_words(self, histogram):
+        length = len(histogram)
+        print('\nThere are {} unique words.\n'.format(length))
+        return length
 
-    def frequency(self):
-        pass
+    def frequency(self, word):
+        word_info = self.histogram.get(word)
+
+        if word_info is None:
+            return
+
+        print('\"{}\" appears {} times.\n'.format(word, word_info))
+
+        return word_info
 
     def check_word_in_histogram(self, words):
-        # for histogram_word in self.histogram:
-        #     if word == histogram_word.get('word'):
-        #         histogram_word['count'] += 1
-        #         return
-        # self.histogram.append({'word': word, 'count': 1})
-        # return
         info_histogram = {}
         tony_is_weird = info_histogram.get
         for word in words:
@@ -55,3 +59,5 @@ class CorpusHistogram:
 
 
 nice = CorpusHistogram('surgery.txt')
+nice.unique_words(nice.histogram)
+nice.frequency('fig')
