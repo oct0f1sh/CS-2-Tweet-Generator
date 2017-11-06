@@ -38,7 +38,7 @@ class CorpusHistogram:
         for sorted_item in sorted(self.histogram.items(), key=lambda item: item[1]):
             item_text = '\"{}\" appears {} times'.format(sorted_item[0], sorted_item[1])
             self.log_word_count(sorted_item[0], sorted_item[1])
-            print(item_text)
+            #print(item_text)
 
         item_text = '\nElapsed time: {} seconds'.format(elapsed_time)
         print(item_text)
@@ -111,7 +111,7 @@ class CorpusHistogram:
                 words.append(word[0])
 
         randy = random.randint(0, len(words) - 1)
-        print('Random weighted word is \"{}\"'.format(words[randy]))
+        print('\nRandom weighted word is \"{}\"'.format(words[randy]))
         return words[randy]
 
 
