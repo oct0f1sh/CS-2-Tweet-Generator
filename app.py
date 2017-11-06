@@ -1,5 +1,7 @@
 from flask import Flask
 from histogram import CorpusHistogram
+
+
 app = Flask(__name__)
 
 
