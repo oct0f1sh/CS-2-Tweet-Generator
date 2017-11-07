@@ -19,7 +19,7 @@ class Tweet(Resource):
         return sentence
 
 
-api.add_resource(Tweet, '/' '/<int:num_of_words>')
+api.add_resource(Tweet, '/', '/<int:num_of_words>')
 
 if __name__ == '__main__':
     app.run(debug=True)
