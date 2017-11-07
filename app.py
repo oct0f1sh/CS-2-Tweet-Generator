@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 from histogram import CorpusHistogram
 
@@ -8,7 +8,11 @@ api = Api(app)
 
 
 class Tweet(Resource):
-    def get(self, num_of_words=20):
+    def get(self):
+        if request.args['num'] is not None:
+            num_of_words = int(request.args['num'])
+        else:
+            num_of_words = 20
         histogram = CorpusHistogram('surgery.txt', False)
         sentence = ''
 
@@ -19,7 +23,7 @@ class Tweet(Resource):
         return sentence
 
 
-api.add_resource(Tweet, '/', '/<int:num_of_words>')
+api.add_resource(Tweet, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
