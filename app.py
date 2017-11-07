@@ -9,10 +9,9 @@ api = Api(app)
 
 class Tweet(Resource):
     def get(self):
+        num_of_words = 20
         if request.args['num'] is not None:
             num_of_words = int(request.args['num'])
-        else:
-            num_of_words = 20
         histogram = CorpusHistogram('surgery.txt', False)
         sentence = ''
 
