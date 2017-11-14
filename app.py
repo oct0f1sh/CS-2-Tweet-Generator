@@ -18,14 +18,14 @@ def split_text_file(corpus):
 
 class Tweet(Resource):
     def get(self):
-        num_of_words = 20
         if request.args['num'] is not None:
             num_of_words = int(request.args['num'])
-        histogram = MarkovChain(split_text_file('surgery.txt'))
+        else:
+            num_of_words = 20
+        chain = MarkovChain(split_text_file('surgery.txt'))
         sentence = []
 
-        for _ in range(0, num_of_words):
-            sentence.append(histogram.get_random_weighted_word())
+        sentence.append(chain.generate_random_sentence(num_of_words - 1))
 
         return ' '.join(sentence)
 
