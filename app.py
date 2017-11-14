@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 from markov_chain import MarkovChain
+import re
 
 
 app = Flask(__name__)
