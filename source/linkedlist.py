@@ -103,7 +103,9 @@ class LinkedList(object):
 
         while node is not None:
             next_node = node.next
+            # if first node is item
             if node.data == item:
+                # if first node is item and only one node in list
                 if node == self.head and node == self.tail:
                     self.head = None
                     self.tail = None
@@ -112,7 +114,9 @@ class LinkedList(object):
                 self.head = node.next
                 del node
                 return
+            # if current node is not last and next node is item
             if next_node is not None and next_node.data == item:
+                # if next node is tail and item
                 if next_node == self.tail:
                     self.tail = node
                     node.next = None
@@ -121,6 +125,7 @@ class LinkedList(object):
                 node.next = next_node.next
                 del next_node
                 return
+            # if item not found continue
             else:
                 node = next_node
 
