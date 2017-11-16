@@ -2,6 +2,7 @@ from listogram import Listogram
 import random
 import re
 
+
 class MarkovChain(list):
     def __init__(self, corpus):
         super(MarkovChain, self).__init__()
@@ -13,28 +14,24 @@ class MarkovChain(list):
             for index in range(len(corpus) - 1):
                 if index != len(corpus) - 1:
                     self.add_count(corpus[index], corpus[index + 1])
-            self.generate_markov_chain()
 
     def add_count(self, word_1, word_2):
         self.tokens += 1
 
-        if len(self.words) == 0:
-            self.words.append([word_1, [word_2]])
+        if len(self) == 0:
+            print('initializing')
+            self.append([word_1, Listogram([word_2])])
             self.types += 1
             return
 
-        for word in self.words:
-            if word[0] == word_1:
-                word[1].append(word_2)
-                return
+        if word_1 in self:
+            print('word in list')
+            self[self.index(word_1)][1].add_count(word_2)
+            return
 
-        self.words.append([word_1, [word_2]])
+        print('word not in list')
+        self.append([word_1, Listogram(word_2)])
         self.types += 1
-
-    def generate_markov_chain(self):
-        for item in self.words:
-            listogram = Listogram(item[1])
-            self.append([item[0], listogram])
 
     def generate_random_sentence(self, length):
         randy = random.randint(0, len(self) - 1)
