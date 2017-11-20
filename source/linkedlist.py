@@ -65,13 +65,11 @@ class LinkedList(object):
     def append(self, item):
         """Insert the given item at the tail of this linked list.
         TODO: Running time: O(???) Why and under what conditions?"""
-        if self.head is None:
+        if self.head is None or self.tail is None:
             self.head = Node(item)
             self.tail = self.head
         else:
-            node = self.head
-            while node.next is not None:
-                node = node.next
+            node = self.tail
             node.next = Node(item)
             self.tail = node.next
 
@@ -103,9 +101,9 @@ class LinkedList(object):
 
         while node is not None:
             next_node = node.next
-            # if first node is item
+            # if current node is item
             if node.data == item:
-                # if first node is item and only one node in list
+                # if current node is item and only one node in list
                 if node == self.head and node == self.tail:
                     self.head = None
                     self.tail = None
