@@ -33,6 +33,12 @@ class LinkedList(object):
         """Return a string representation of this linked list."""
         return 'LinkedList({!r})'.format(self.items())
 
+    def __iter__(self):
+        i = self.head
+        while i is not self.tail:
+            yield i
+            i = i.next
+
     def items(self):
         """Return a list (dynamic array) of all items in this linked list.
         Best and worst case running time: O(n) for n items in the list (length)
@@ -92,6 +98,39 @@ class LinkedList(object):
             if node.data == quality:
                 return node.data
             node = node.next
+
+    def replace(self, find, replace_with):
+        node = self.head
+        while node is not None:
+            next_node = node.next
+            # if first node is item to replace
+            if node.data == find:
+                # if current node is being replaced and only node in list
+                if node == self.head and node == self.tail:
+                    self.head = replace_with
+                    self.tail = self.head
+                    del node
+                    return
+                self.head = replace_with
+                del node
+                self.head.next = next_node
+                return
+            # if current node is not last and next node is item to be replaced
+            if next_node is not None and next_node.data == find:
+                # if next node is also tail
+                if next_node == self.tail:
+                    self.tail = replace_with
+                    node.next = self.tail
+                    del next_node
+                    return
+                node.next = replace_with
+                replace_with.next = next_node.next
+                del next_node
+                return
+            else:
+                node = node.next
+
+        raise ValueError('Item not found: {}'.format(find))
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
