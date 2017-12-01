@@ -101,30 +101,31 @@ class LinkedList(object):
 
     def replace(self, find, replace_with):
         node = self.head
+        new_node = Node(replace_with)
         while node is not None:
             next_node = node.next
             # if first node is item to replace
             if node.data == find:
                 # if current node is being replaced and only node in list
                 if node == self.head and node == self.tail:
-                    self.head = replace_with
+                    self.head = new_node
                     self.tail = self.head
                     del node
                     return
-                self.head = replace_with
+                new_node.next = next_node
+                self.head = new_node
                 del node
-                self.head.next = next_node
                 return
             # if current node is not last and next node is item to be replaced
             if next_node is not None and next_node.data == find:
                 # if next node is also tail
                 if next_node == self.tail:
-                    self.tail = replace_with
-                    node.next = self.tail
+                    node.next = new_node
+                    self.tail = node.next
                     del next_node
                     return
-                node.next = replace_with
-                replace_with.next = next_node.next
+                node.next = new_node
+                new_node.next = next_node.next
                 del next_node
                 return
             else:

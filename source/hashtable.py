@@ -98,11 +98,18 @@ class HashTable(object):
         # TODO: If found, update value associated with given key
         # TODO: Otherwise, insert given key-value entry into bucket
         bucket_index = self._bucket_index(key)
-        for iter_key, iter_value in self.buckets[bucket_index]:
-            if iter_key == key:
-                self.buckets[bucket_index].replace((iter_key, iter_value), (key, value))
-                return
-        self.buckets[bucket_index].append((key, value))
+        # for iter_key, iter_value in self.buckets[bucket_index]:
+        #     if iter_key == key:
+        #         self.buckets[bucket_index].replace((iter_key, iter_value), (key, value))
+        #         return
+        # self.buckets[bucket_index].append((key, value))
+        current_linked_list = self.buckets[bucket_index]
+        try:
+            current_value = self.get(key)
+            current_linked_list.replace((key, current_value), (key, value))
+        except KeyError:
+            self.buckets[bucket_index].append((key, value))
+
 
     def delete(self, key):
         """Delete the given key from this hash table, or raise KeyError.
@@ -113,17 +120,10 @@ class HashTable(object):
         # TODO: Otherwise, raise error to tell user delete failed
         # Hint: raise KeyError('Key not found: {}'.format(key))
         bucket_index = self._bucket_index(key)
-        print(bucket_index)
         if bucket_index is not None:
-            print('got inside')
             current_linked_list = self.buckets[bucket_index]
-            print('inside linked list {}'.format(current_linked_list))
-            for iter_item in current_linked_list:
-                print('iter item')
-                if iter_item.data[0] == key:
-                    print('item found')
-                    self.buckets[bucket_index].delete(iter_item.data)
-                    print('item deleted')
+            value = self.get(key)
+            current_linked_list.delete((key, value))
         else:
             raise KeyError('Key not found: {}'.format(key))
 
